@@ -21,18 +21,22 @@ When deploying on AWS EKS:
 
 To install the chart as a release and name it `my-release`:
 
+Manually generate secrets for timescaledb-access endpoint and timescaledb-data endpoint.
+
+```console
+random_password () { < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c32; }
+```
+
+```console
+kubectl create secret generic `my-release`-access --from-literal=password-superuser='<manually_generated_timescaledb-access_password>'
+kubectl create secret generic `my-release`-data --from-literal=password-superuser='<manually_generated_client_timescaledb-data_password>'
+```
+
 ```console
 helm upgrade --install my-release .
 ```
 
-You can override parameters using the `--set key=value[,key=value]` argument to `helm upgrade --install`,
-e.g., to install the chart with randomly generated passwords:
-
-```console
-random_password () { < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c32; }
-helm upgrade --install my-release . \
-    --set credentials.accessNode.superuser="$(random_password)"
-```
+You can override parameters using the `--set key=value[,key=value]` argument to `helm upgrade --install`.
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
 ```console

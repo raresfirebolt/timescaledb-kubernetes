@@ -11,15 +11,8 @@ image:
   # Image was built from
   # https://github.com/timescale/timescaledb-docker-ha
   repository: timescaledev/timescaledb-ha
-  tag: pg12-ts2.0.0-p0
+  tag: pg12-ts2.0-latest
   pullPolicy: IfNotPresent
-
-# Credentials used by PostgreSQL
-credentials:
-  accessNode:
-    superuser: tea
-  dataNode:
-    superuser: coffee
 
 # Extra custom environment variables.
 # These should be an EnvVar, as this allows you to inject secrets into the environment
@@ -35,6 +28,9 @@ env:
     # a Docker Volume in many Docker images, which means the data is not actually persisted.
     value: /var/lib/postgresql/pgdata
 
+loadBalancer:
+  enabled: true
+  
 persistentVolume:
   enabled: true
   size: 5G
